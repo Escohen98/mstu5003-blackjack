@@ -1,1 +1,5 @@
-app.py static templates {}
+body {
+  display: flex;
+  align-items: center;
+  
+}
