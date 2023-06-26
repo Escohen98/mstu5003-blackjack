@@ -1,3 +1,8 @@
+<!--
+Homepage for blackjack game
+Just a title, start button, and image.
+Might include a rules page if there is time.
+-->
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
@@ -5,6 +10,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Interactive Appliance</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/index.css">
+    <link rel="stylesheet" href="../static/home.css">
     <script src="../static/index.js"></script>
   </head>
+  <body>
+    <header>
+      <h1> Let's play some Blackjack! <h1>
+    </header>
+    <main>
+      <!--If an image is provided, use it,
+      otherwise use default -->
+      {% if image %}
+      <img id="card_img" src={{image}} alt="{{img_alt}}"/>
+      {% else %}
+      <img id="card_img" alt="boring cards, gross" src="https://cognitiveinvesting.files.wordpress.com/2012/12/playing-cards.jpg" />
+      {% endif %}
+
+      <a href="./404.html" id="play_link"><button type="button" class="btn btn-info" id="play_button">Play!</button></a>
+
+</html>
