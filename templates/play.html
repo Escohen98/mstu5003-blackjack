@@ -1,3 +1,8 @@
+<!--
+Copyright © Eric Cohen 2023
+Main page to play the game. Has a board,
+Very organized
+-->
 #Play
 <head>
   <meta charset="utf-8">
@@ -9,8 +14,22 @@
 <body>
   <header>
     <h1>Let's make some money!! </h1>
-    <div id="name-form">  
+    <div id="name-form">
       <form><p>Enter your name, soldier</p><input type="text"></input>
-      <button>Go!</button>
     </div>
   </header>
+  <body>
+    <button id="Play">Play!</button>
+    <section id="game_board">
+      <div id="dealer" class="card-hand">
+      </div>
+      <div id="player" class="card-hand">
+      </div>
+    </section>
+    <section id="play-buttons">
+      <!-- Going to be hidden when in play -->
+      <button>Go!</button>
+      <!--Going to be hidden when not in play -->
+
+    </section>
+  </body>
