@@ -3,7 +3,6 @@ Copyright © Eric Cohen 2023
 Main page to play the game. Has a board,
 Very organized
 -->
-#Play
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -18,12 +17,12 @@ Very organized
     <h1>Let's make some money!! </h1>
     <!-- Going to be hidden when in play -->
     <form method="POST" class="name-form {{hide_name}}">
-      <!--Submit your name -->
-      <label name="username">{{tagline}}:<input type="text" name="user-inpt" /></label>
-      <submit name="nametag" value="Go!" />
+  <!-- Submit your name -->
+      <label name="username">{{tagline}}: <input type="text" name="user-inpt" /></label>
+      <button type="submit" name="nametag" class="btn btn-primary">Go!</button>
     </form>
   </header>
-  <body>
+  <main>
     <section id="game_board">
     <!-- Going to be re-rendering everytime with more cards
       -- Could honestly auto-gen the card-hands, but eh.
@@ -41,12 +40,12 @@ Very organized
       </div>
     </section>
     <section id="play-buttons">
-      <!--Going to be hidden when not in play -->
-      <form method = 'POST'>
-        <submit name="hit" value="Hit💪" class="btn btn-success">
-        <submit name="stay" value="Stay⚠️" class="btn btn-danger">
+  <!-- Going to be hidden when not in play -->
+      <form method="POST">
+        <button type="submit" name="hit" value="Hit💪" class="btn btn-success">Hit💪</button>
+        <button type="submit" name="stay" value="Stay⚠️" class="btn btn-danger">Stay⚠️</button>
         <!-- Probably not going to implement this with the time I have -->
-        <submit name="split" value="Split🪓" class="btn btn-warning hidden">
+        <button type="submit" name="split" value="Split🪓" class="btn btn-warning hidden">Split🪓</button>
       </form>
     </section>
     <section id="results" class={{results_hidden}}>
@@ -55,4 +54,6 @@ Very organized
       <a href="/play.html"><button type="button" class="btn btn-danger">Play Again!</button></a>
       <!-- Probably not going to implement this with the time I have -->
       <a href="/surprise.html"><button type="button" class="btn btn-warning" class="hidden">Ooo lala</button></a>
-  </body>
+    </section>
+  </main>
+</body>
