@@ -2,9 +2,18 @@
 #Player object to store the name, hand, and sum.
 class player():
 
-    def __init__(self, name, card1, card2):
+    #Initialize player with name and cards
+    #Either 1 or 2 cards depending on player or dealer
+    #Throws exception otherwise
+    def __init__(self, name, *cards):
         self.name = name #Cannot be changed once set.
-        self.hand = [card1, card2]
+        self.hand = []
+
+        if (len(cards) == 0 or len(cards) > 2):
+            throw Exception("Only 1 or 2 cards plz. K thx.")
+
+        for (card in cards):
+            hand.append(card)
 
     #Checks the total of the cards
     #Returns the sum, as per blackjack rules.
@@ -31,7 +40,7 @@ class player():
     def setName(name):
         if (self.name == None or self.name == ""):
             self.name = name
-            
+
     #Helper function to get the player's hand
     def getHand():
         return self.hand

@@ -7,7 +7,7 @@ Very organized
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Interactive Appliance</title>
+  <title>Blackjack</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../static/play.css">
   <!--<script src="../static/play.js"></script>-->
@@ -17,10 +17,11 @@ Very organized
     <h1>Let's make some money!! </h1>
     <!-- Going to be hidden when in play -->
     <form method="POST" class="name-form">
+      <!--Submit your name -->
       <label name="username">{{tagline}}:<input type="text" name="user-inpt" /></label>
+      <submit name="nametag" value="Go!" />
   </header>
   <body>
-    <button id="Play">Play!</button>
     <section id="game_board">
     <!-- Going to be re-rendering everytime with more cards
       -- Could honestly auto-gen the card-hands, but eh.
@@ -32,7 +33,8 @@ Very organized
       </div
       <div id="player" class="card-hand">
         {% for hand in hands %}
-          <p class="card" value={{card_value}}>
+        <!-- Get request only -->
+          <p class="card">{{card_value}}</p>
         {% endfor %}
       </div>
     </section>
@@ -43,4 +45,9 @@ Very organized
       <!-- Probably not going to implement this with the time I have -->
       <button type="button" class="btn btn-warning" class="hidden">Split🪓</button>
     </section>
+    <section id="results" class={{results-hidden}}>
+      <a href="/"><button type="button" class="btn btn-success">Back</button></a>
+      <a href="/play.html"><button type="button" class="btn btn-danger">Play Again!</button></a>
+      <!-- Probably not going to implement this with the time I have -->
+      <a href="/surprise.html"><button type="button" class="btn btn-warning" class="hidden">Ooo lala</button></a>
   </body>

@@ -28,16 +28,19 @@ def game():
     #Generates deck when there is none
     #(rests o nother pages)
     deck = gameHandler.generateDeck()
-    player = player(request.form.get('user-inpt'), gameHandler.deal(deck), gameHandler.deal(deck))
-
+    playerCards = [gameHandler.deal(deck)]
+    dealerCard = gameHandler.deal(deck)
+    playerCards.append(gameHandler.deal(deck))
+    dealerLaterCard = gameHandler.deal(deck)
+    dealer = player("dealer", dealerCard[0], "")
+     player("", playerCards[0], playerCards[1])
+    if (request.METHOD == 'POST'):
+        if ('nametag' in request.form):
+            player.setName(request.form.get('user-inpt'))
     #Grab name
     #Re-render with restart button
     tagline = "Enter your name, soldier"
     return render_template("/play.html", tagline=tagline)
-
-@app.route('/results.html', methods['GET'])
-def results():
-    return render_template("/results.html")
 
 #404 error errorhandler
 #[CYNICAL] hehehe
