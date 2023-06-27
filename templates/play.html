@@ -17,7 +17,7 @@ Very organized
     <a href="/"><button type="button">Back.</button></a>
     <h1>Let's make some money!! </h1>
     <!-- Going to be hidden when in play -->
-    <form method="POST" class="name-form {{hide-name}}">
+    <form method="POST" class="name-form {{hide_name}}">
       <!--Submit your name -->
       <label name="username">{{tagline}}:<input type="text" name="user-inpt" /></label>
       <submit name="nametag" value="Go!" />
@@ -30,13 +30,13 @@ Very organized
       -- Probably going to need to further educate myself on this one. -->
       <div id="dealer" class="card-hand">
         {% for card in cards %}
-          <p class="card">{{card_value}}</p>
+          <p class="card">{{card}}</p>
         {% endfor %}
       </div
       <div id="player" class="card-hand">
         {% for hand in hands %}
         <!-- Get request only -->
-          <p class="card">{{card_value}}</p>
+          <p class="card">{{hand}}</p>
         {% endfor %}
       </div>
     </section>

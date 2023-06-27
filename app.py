@@ -26,12 +26,12 @@ def home():
 def game():
     #To some degree, I feel like this would go well in a JSON
     renderVars = {
-        "hide-name": "",
+        "hide_name": "",
         "tagline": "Enter your name, soldier",
         "cards": [], #Player cards
         "hands": [], #Dealer cards
-        "results-hidden": "hidden", #Hiding of the results. Should be "hidden" or ""
-        "result-text": "" #Pretty self-explanatory
+        "results_hidden": "hidden", #Hiding of the results. Should be "hidden" or ""
+        "result_text": "" #Pretty self_explanatory
     }
     gameHandler = play() #play class for game logic
     #Generates deck when there is none
@@ -44,7 +44,7 @@ def game():
      player("", playerCards[0], playerCards[1])
     #Set player name
     if ('nametag' in request.form):
-        player.setName(request.form['user-inpt'])
+        player.setName(request.form['user_inpt'])
         #Similar to Java, points to variable instead of assigned
         renderVar["cards"] = dealer.getHand()
         renderVar["hideName"] = "hidden" #Hides the name field by assigning hidden class
@@ -52,21 +52,23 @@ def game():
     elif ('hit' in request.form and renderVar["hideName"] == "hidden"):
         player.appendHand(gameHandler.deal())
         if (player.sumTotal() == 21):
-            renderVars["result-text"] = gameHandler.runDealer(dealer, player)
-            renderVars["result-hidden"] = "" #Unhides the results
+            renderVars["result_text"] = gameHandler.runDealer(dealer, player)
+            renderVars["result_hidden"] = "" #Unhides the results
     elif ('stay' in request.form and renderVar["hideName"] == "hidden"):
         #Going to have the logic go all at once
         #Not going to handle rendering the page for each deal
         dealer.appendHand(dealerLaterCard)
-        renderVars["result-text"] = gameHandler.runDealer(dealer, player)
-        renderVars["result-hidden"] = "" #Unhides the results
+        renderVars["result_text"] = gameHandler.runDealer(dealer, player)
+        renderVars["result_hidden"] = "" #Unhides the results
     elif ('split' in request.form and renderVar["hideName"] == "hidden" and len(player.getHand()) == 2
     and player.getHand()[0] == player.getHand()[1]):
         #Not going to implement this
         pass
     #Grab name
-    #Re-render with restart button
-    return render_template("/play.html", tagline=tagline)
+    #Re_render with restart button
+    return render_template("/play.html", hide_name=renderVars["hide_name"], tagline=renderVars["tagline"],
+    cards=renderVars["cards"], hands=renderVars["hands"], results_hidden=renderVars["results_hidden"],
+    results_text=renderVars["results_text"])
 
 #404 error errorhandler
 #[CYNICAL] hehehe
