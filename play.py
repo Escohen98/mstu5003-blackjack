@@ -4,13 +4,12 @@
 import random
 
 class play():
-
+    deck = []
     #Generates Deck. It's 1d.
     #Suits don't matter.
     #Adds 4 of each 2-16 into an array
     #Returns array
     def generateDeck():
-        deck = []
         #Card number
         for (i=2; i<17; i++):
             #Number of each card

@@ -17,9 +17,9 @@ class player():
 
     #Checks the total of the cards
     #Returns the sum, as per blackjack rules.
-    def sumTotal(*argv):
+    def sumTotal():
         sum = 0
-        for arg in argv:
+        for arg in hand:
             #Handles 11 (ace) going above 21
             if (arg == 16 and sum+arg > 21):
                 sum += 1

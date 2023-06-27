@@ -24,22 +24,37 @@ def home():
 #Play (main) page
 @app.route('/play.html', methods=['GET', 'POST'])
 def game():
+    #To some degree, I feel like this would go well in a JSON
+    renderVars = {
+        tagline: "Enter your name, soldier",
+        cards: [], #Player cards
+        hands: [], #Dealer cards
+
+    }
     gameHandler = play() #play class for game logic
     #Generates deck when there is none
     #(rests o nother pages)
-    deck = gameHandler.generateDeck()
     playerCards = [gameHandler.deal(deck)]
     dealerCard = gameHandler.deal(deck)
-    playerCards.append(gameHandler.deal(deck))
-    dealerLaterCard = gameHandler.deal(deck)
+    playerCards.append(gameHandler.deal())
+    dealerLaterCard = gameHandler.deal()
     dealer = player("dealer", dealerCard[0], "")
      player("", playerCards[0], playerCards[1])
-    if (request.METHOD == 'POST'):
-        if ('nametag' in request.form):
-            player.setName(request.form.get('user-inpt'))
+    #Set player name
+    if ('nametag' in request.form):
+        player.setName(request.form['user-inpt'])
+    elif ('hit' in request.form):
+        pass
+    elif ('stay' in request.form):
+        #Going to have the logic go all at once
+        #Not going to handle rendering the page for each deal
+        dealer.appendHand(dealerLaterCard)
+        while dealer.sumTotal() < 16:
+            dealer.appendHand(gameHandler.deal()) 
+    elif ('split' in request.form):
+        pass
     #Grab name
     #Re-render with restart button
-    tagline = "Enter your name, soldier"
     return render_template("/play.html", tagline=tagline)
 
 #404 error errorhandler
