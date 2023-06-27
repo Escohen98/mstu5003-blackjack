@@ -9,26 +9,26 @@ class play():
     #Suits don't matter.
     #Adds 4 of each 2-16 into an array
     #Returns array
-    def generateDeck():
+    def generateDeck(self):
         #Card number
-        for (i=2; i<17; i++):
+        for i in range(2,17):
             #Number of each card
-            for (j=0; j<4; j++):
-                deck.append(i);
-        return deck;
+            for j in range(4):
+                self.deck.append(i)
+        return self.deck;
 
     #Takes a deck array, shuffles it
     #Returns and removes the last element of the array
-    def deal(deck):
+    def deal(self):
         #Cool new function I never knew about
-        random.shuffle(deck)
-        return deck.pop()
+        random.shuffle(self.deck)
+        return self.deck.pop()
 
     #Handles dealer play. Going to be re-used
-    def runDealer(dealer, player):
+    def runDealer(self,dealer, player):
         while dealer.sumTotal() < 16:
-            dealer.appendHand(gameHandler.deal())
+            dealer.appendHand(self.deal())
         if dealer.sumTotal() > 21 or dealer.sumTotal() > player.sumTotal():
-            return = "You lose. HAHAHAHAHAHAAHHAHA"
+            return "You lose. HAHAHAHAHAHAAHHAHA"
         elif dealer.sumTotal() < player.sumTotal():
-            return = "It's a draw :/"
+            return "It's a draw :/"

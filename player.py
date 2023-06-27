@@ -9,17 +9,18 @@ class player():
         self.name = name #Cannot be changed once set.
         self.hand = []
 
+        #Should only be 1 or 2 cards. If not, sending an error.
         if (len(cards) == 0 or len(cards) > 2):
-            throw Exception("Only 1 or 2 cards plz. K thx.")
+            raise Exception("Only 1 or 2 cards plz. K thx.")
 
-        for (card in cards):
-            hand.append(card)
+        for card in cards:
+            self.hand.append(card)
 
     #Checks the total of the cards
     #Returns the sum, as per blackjack rules.
     def sumTotal():
         sum = 0
-        for arg in hand:
+        for arg in self.hand:
             #Handles 11 (ace) going above 21
             if (arg == 16 and sum+arg > 21):
                 sum += 1

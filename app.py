@@ -34,14 +34,15 @@ def game():
         "result_text": "" #Pretty self_explanatory
     }
     gameHandler = play() #play class for game logic
+    gameHandler.generateDeck()
     #Generates deck when there is none
     #(rests o nother pages)
-    playerCards = [gameHandler.deal(deck)]
-    dealerCard = gameHandler.deal(deck)
+    playerCards = [gameHandler.deal()]
+    dealerCard = gameHandler.deal()
     playerCards.append(gameHandler.deal())
     dealerLaterCard = gameHandler.deal()
-    dealer = player("dealer", dealerCard[0], "")
-     player("", playerCards[0], playerCards[1])
+    dealer = player("dealer", dealerCard, "")
+    player("", playerCards[0], playerCards[1])
     #Set player name
     if ('nametag' in request.form):
         player.setName(request.form['user_inpt'])
@@ -68,7 +69,7 @@ def game():
     #Re_render with restart button
     return render_template("/play.html", hide_name=renderVars["hide_name"], tagline=renderVars["tagline"],
     cards=renderVars["cards"], hands=renderVars["hands"], results_hidden=renderVars["results_hidden"],
-    results_text=renderVars["results_text"])
+    result_text=renderVars["result_text"])
 
 #404 error errorhandler
 #[CYNICAL] hehehe
