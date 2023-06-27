@@ -10,26 +10,37 @@ Very organized
   <title>Interactive Appliance</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../static/play.css">
+  <!--<script src="../static/play.js"></script>-->
 </head>
 <body>
   <header>
     <h1>Let's make some money!! </h1>
-    <div id="name-form">
-      <form><p>Enter your name, soldier</p><input type="text"></input>
-    </div>
+    <!-- Going to be hidden when in play -->
+    <form method="POST" class="name-form">
+      <label name="username">{{tagline}}:<input type="text" name="user-inpt" /></label>
   </header>
   <body>
     <button id="Play">Play!</button>
     <section id="game_board">
+    <!-- Going to be re-rendering everytime with more cards
+      -- Could honestly auto-gen the card-hands, but eh.
+      -- Probably going to need to further educate myself on this one. -->
       <div id="dealer" class="card-hand">
-      </div>
+        {% for card in cards %}
+          <p name={{card_name}} class="card" value={{card_value}}>
+        {% endfor %}
+      </div
       <div id="player" class="card-hand">
+        {% for hand in hands %}
+          <p class="card" value={{card_value}}>
+        {% endfor %}
       </div>
     </section>
     <section id="play-buttons">
-      <!-- Going to be hidden when in play -->
-      <button>Go!</button>
       <!--Going to be hidden when not in play -->
-
+      <button type="button" class="btn btn-success">Hit💪</button>
+      <button type="button" class="btn btn-danger">Stay⚠️</button>
+      <!-- Probably not going to implement this with the time I have -->
+      <button type="button" class="btn btn-warning" class="hidden">Split🪓</button>
     </section>
   </body>

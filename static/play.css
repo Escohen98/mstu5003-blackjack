@@ -1,1 +1,4 @@
 /*Copyright © Eric Cohen 2023*/
+.hidden {
+  visibility: hidden;
+}

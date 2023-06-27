@@ -6,14 +6,14 @@
 
 from flask import Flask, request, url_for, redirect, render_template
 from play import play
+from player import player
 app = Flask(__name__)
-
-#Game handler
-play = play();
+deck = [] #The deck
 
 #Home page
 @app.route('/', methods=['GET', 'POST'])
 def home():
+    deck = []
     #Blackjack image link.
     #Mostly doing this to play around with if statement.
     image = 'http://cliparts.co/cliparts/Bcg/rbG/BcgrbGk7i.jpg'
@@ -22,14 +22,28 @@ def home():
 
 
 #Play (main) page
-@app.route('/play.html', methods=['GET', 'POST']):
-    def game():
-        return render_template("/play.html")
+@app.route('/play.html', methods=['GET', 'POST'])
+def game():
+    gameHandler = play() #play class for game logic
+    #Generates deck when there is none
+    #(rests o nother pages)
+    deck = gameHandler.generateDeck()
+    player = player(request.form.get('user-inpt'), gameHandler.deal(deck), gameHandler.deal(deck))
+
+    #Grab name
+    #Re-render with restart button
+    tagline = "Enter your name, soldier"
+    return render_template("/play.html", tagline=tagline)
+
+@app.route('/results.html', methods['GET'])
+def results():
+    return render_template("/results.html")
 
 #404 error errorhandler
 #[CYNICAL] hehehe
 @app.errorhandler(404)
 def page_not_found(e):
+    deck = []
     return render_template('404.html'), 404
 
 #Runs the server
