@@ -23,3 +23,12 @@ class play():
         #Cool new function I never knew about
         random.shuffle(deck)
         return deck.pop()
+
+    #Handles dealer play. Going to be re-used
+    def runDealer(dealer, player):
+        while dealer.sumTotal() < 16:
+            dealer.appendHand(gameHandler.deal())
+        if dealer.sumTotal() > 21 or dealer.sumTotal() > player.sumTotal():
+            return = "You lose. HAHAHAHAHAHAAHHAHA"
+        elif dealer.sumTotal() < player.sumTotal():
+            return = "It's a draw :/"

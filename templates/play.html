@@ -14,12 +14,14 @@ Very organized
 </head>
 <body>
   <header>
+    <a href="/"><button type="button">Back.</button></a>
     <h1>Let's make some money!! </h1>
     <!-- Going to be hidden when in play -->
-    <form method="POST" class="name-form">
+    <form method="POST" class="name-form {{hide-name}}">
       <!--Submit your name -->
       <label name="username">{{tagline}}:<input type="text" name="user-inpt" /></label>
       <submit name="nametag" value="Go!" />
+    </form>
   </header>
   <body>
     <section id="game_board">
@@ -28,7 +30,7 @@ Very organized
       -- Probably going to need to further educate myself on this one. -->
       <div id="dealer" class="card-hand">
         {% for card in cards %}
-          <p name={{card_name}} class="card" value={{card_value}}>
+          <p class="card">{{card_value}}</p>
         {% endfor %}
       </div
       <div id="player" class="card-hand">
@@ -40,12 +42,15 @@ Very organized
     </section>
     <section id="play-buttons">
       <!--Going to be hidden when not in play -->
-      <button type="button" class="btn btn-success">Hit💪</button>
-      <button type="button" class="btn btn-danger">Stay⚠️</button>
-      <!-- Probably not going to implement this with the time I have -->
-      <button type="button" class="btn btn-warning" class="hidden">Split🪓</button>
+      <form method = 'POST'>
+        <submit name="hit" value="Hit💪" class="btn btn-success">
+        <submit name="stay" value="Stay⚠️" class="btn btn-danger">
+        <!-- Probably not going to implement this with the time I have -->
+        <submit name="split" value="Split🪓" class="btn btn-warning hidden">
+      </form>
     </section>
     <section id="results" class={{results-hidden}}>
+      <p id="result-text">{{result}}</p>
       <a href="/"><button type="button" class="btn btn-success">Back</button></a>
       <a href="/play.html"><button type="button" class="btn btn-danger">Play Again!</button></a>
       <!-- Probably not going to implement this with the time I have -->
