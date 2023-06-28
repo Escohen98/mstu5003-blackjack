@@ -1,7 +1,8 @@
 #Copyright © Eric Cohen 2023
-#Player object to store the name, hand, and sum.
+#Player object to store and initialize the name, hand, and sum.
 class player():
-
+    name = None
+    hand = None
     #Initialize player with name and cards
     #Either 1 or 2 cards depending on player or dealer
     #Throws exception otherwise
@@ -18,7 +19,7 @@ class player():
 
     #Checks the total of the cards
     #Returns the sum, as per blackjack rules.
-    def sumTotal():
+    def sumTotal(self):
         sum = 0
         for arg in self.hand:
             #Handles 11 (ace) going above 21
@@ -33,19 +34,19 @@ class player():
         return sum
 
     #Helper function to get player's name
-    def getName():
+    def getName(self):
         return self.name
 
     #Helper function to set player's name
     #Only works if player's name is blank
-    def setName(name):
+    def setName(self,name):
         if (self.name == None or self.name == ""):
             self.name = name
 
     #Helper function to get the player's hand
-    def getHand():
-        return self.hand
+    def getHand(self):
+        return self.hand if self.hand is not None else []
 
     #Helper function to add a new card to the hand
-    def appendHand(card):
+    def appendHand(self, card):
         self.hand.append(card)

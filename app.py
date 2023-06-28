@@ -45,30 +45,30 @@ def game():
     player("", playerCards[0], playerCards[1])
     #Set player name
     if ('nametag' in request.form):
-        player.setName(request.form['user_inpt'])
+        player.setName(player, request.form['user-inpt'])
         #Similar to Java, points to variable instead of assigned
-        renderVar["cards"] = dealer.getHand()
-        renderVar["hideName"] = "hidden" #Hides the name field by assigning hidden class
-        renderVar["hands"] = player.getHand()
-    elif ('hit' in request.form and renderVar["hideName"] == "hidden"):
+        renderVars["cards"] = dealer.getHand()
+        renderVars["hideName"] = "hidden" #Hides the name field by assigning hidden class
+        renderVars["hands"] = player.getHand(player)
+    elif ('hit' in request.form and renderVars["hideName"] == "hidden"):
         player.appendHand(gameHandler.deal())
         if (player.sumTotal() == 21):
             renderVars["result_text"] = gameHandler.runDealer(dealer, player)
             renderVars["result_hidden"] = "" #Unhides the results
-    elif ('stay' in request.form and renderVar["hideName"] == "hidden"):
+    elif ('stay' in request.form and renderVars["hideName"] == "hidden"):
         #Going to have the logic go all at once
         #Not going to handle rendering the page for each deal
         dealer.appendHand(dealerLaterCard)
         renderVars["result_text"] = gameHandler.runDealer(dealer, player)
         renderVars["result_hidden"] = "" #Unhides the results
-    elif ('split' in request.form and renderVar["hideName"] == "hidden" and len(player.getHand()) == 2
+    elif ('split' in request.form and renderVars["hideName"] == "hidden" and len(player.getHand()) == 2
     and player.getHand()[0] == player.getHand()[1]):
         #Not going to implement this
         pass
     #Grab name
     #Re_render with restart button
     return render_template("/play.html", hide_name=renderVars["hide_name"], tagline=renderVars["tagline"],
-    cards=renderVars["cards"], hands=renderVars["hands"], results_hidden=renderVars["results_hidden"],
+    cards=gameHandler.royals(renderVars["cards"]), hands=gameHandler.royals(renderVars["hands"]), results_hidden=renderVars["results_hidden"],
     result_text=renderVars["result_text"])
 
 #404 error errorhandler
