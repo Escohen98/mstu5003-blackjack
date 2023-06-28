@@ -2,6 +2,8 @@
 #Class to handle the playing of Blackjack.
 #Keeps app.py from getting too cluttered.
 import random
+from flask import session
+
 
 class play():
     deck = []
@@ -21,6 +23,8 @@ class play():
     #Returns and removes the last element of the array
     def deal(self):
         #Cool new function I never knew about
+        #To be honest, I only need to do this once,
+        #but given the size of a deck, I guess it doesn't matter.
         random.shuffle(self.deck)
         return [self.deck.pop()]
 
@@ -51,4 +55,6 @@ class play():
             elif card == 14 or card == 1: #Card should never equal 1, but you never know
                 newCards.append('A')
             else:
-                return card
+                newCards.append(card)
+
+        return newCards

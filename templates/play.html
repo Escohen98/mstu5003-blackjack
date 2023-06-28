@@ -27,21 +27,27 @@ Very organized
     <!-- Going to be re-rendering everytime with more cards
       -- Could honestly auto-gen the card-hands, but eh.
       -- Probably going to need to further educate myself on this one. -->
-      <div id="dealer" class="card-hand">
-        {% for card in cards %}
-          <p class="card">{{card}}</p>
-        {% endfor %}
+      <div id="dealer" class="player-hand">
+        <h3>Dealer</h3><br>
+        <div class="card-hand">
+          {% for card in cards %}
+            <p class="card">{{card}}</p>
+          {% endfor %}
+        </div>
       </div
-      <div id="player" class="card-hand">
-        {% for hand in hands %}
-        <!-- Get request only -->
-          <p class="card">{{hand}}</p>
-        {% endfor %}
+      <div id="player" class="player-hand">
+        <h3>{{pname}}</h3><br>
+        <div class="card-hand">
+          {% for hand in hands %}
+          <!-- Get request only -->
+            <p class="card">{{hand}}</p>
+          {% endfor %}
+        </div>
       </div>
     </section>
     <section id="play-buttons">
   <!-- Going to be hidden when not in play -->
-      <form method="POST">
+      <form id="play-buttons" method="POST">
         <button type="submit" name="hit" value="Hit💪" class="btn btn-success">Hit💪</button>
         <button type="submit" name="stay" value="Stay⚠️" class="btn btn-danger">Stay⚠️</button>
         <!-- Probably not going to implement this with the time I have -->
@@ -50,8 +56,8 @@ Very organized
     </section>
     <section id="results" class={{results_hidden}}>
       <p id="result-text">{{result_text}}</p>
-      <a href="/"><button type="button" class="btn btn-success">Back</button></a>
-      <a href="/play.html"><button type="button" class="btn btn-danger">Play Again!</button></a>
+      <a href="/"><button type="button" class="btn btn-info">Back</button></a>
+      <a href="/play.html"><button type="button" class="btn btn-secondary">Play Again!</button></a>
       <!-- Probably not going to implement this with the time I have -->
       <a href="/surprise.html"><button type="button" class="btn btn-warning" class="hidden">Ooo lala</button></a>
     </section>

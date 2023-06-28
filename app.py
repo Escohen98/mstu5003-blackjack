@@ -4,10 +4,11 @@
 #Than my previous assignmnet. Hopefully I get the hang of things
 #Anyway, have fun!
 
-from flask import Flask, request, url_for, redirect, render_template
+from flask import Flask, request, url_for, redirect, render_template, session
 from play import play
 from player import player
 app = Flask(__name__)
+app.secret_key = 'th1s1s4s3cr3t!'
 deck = [] #The deck
 
 #Home page
@@ -24,52 +25,81 @@ def home():
 #Play (main) page
 @app.route('/play.html', methods=['GET', 'POST'])
 def game():
-    #To some degree, I feel like this would go well in a JSON
     renderVars = {
         "hide_name": "",
         "tagline": "Enter your name, soldier",
-        "cards": [], #Player cards
-        "hands": [], #Dealer cards
-        "results_hidden": "hidden", #Hiding of the results. Should be "hidden" or ""
-        "result_text": "" #Pretty self_explanatory
+        "cards": [],
+        "hands": [],
+        "results_hidden": "hidden",
+        "result_text": ""
     }
-    gameHandler = play() #play class for game logic
-    gameHandler.generateDeck()
-    #Generates deck when there is none
-    #(rests o nother pages)
-    playerCards = [gameHandler.deal()]
-    dealerCard = gameHandler.deal()
-    playerCards.append(gameHandler.deal())
-    dealerLaterCard = gameHandler.deal()
-    dealer = player("dealer", dealerCard, "")
-    player("", playerCards[0], playerCards[1])
-    #Set player name
-    if ('nametag' in request.form):
-        player.setName(player, request.form['user-inpt'])
-        #Similar to Java, points to variable instead of assigned
+    gameHandler = play()  # create an instance of the play class
+
+    if 'deck' in session:
+        gameHandler.deck = session['deck']
+
+        # check the existence of all session keys before accessing them
+        if 'dealer_card' in session and 'dealer_hand' in session and 'player_hand' in session and 'player_name' in session and 'cards' in session:
+            dealerCard = session['dealer_card']
+            dealer = player("dealer", dealerCard, "")
+            dealer.setHand(session['dealer_hand'])
+
+            playerCards = session['player_hand']
+            playerName = session['player_name']
+            user_player = player(playerName, playerCards[0], playerCards[1])
+
+            cards = session['cards']
+        else:
+            gameHandler.generateDeck()
+            session['deck'] = gameHandler.deck  # stores the deck in the session
+            cards = []
+            for i in range(4):
+                cards.append(gameHandler.deal())
+            session['cards'] = cards
+            #Order of dealing
+            playerCards = [cards[0]]
+            dealerCard = cards[1]
+            playerCards.append(cards[2])
+            dealerLaterCard = cards[3]
+            dealer = player("dealer", dealerCard, "")
+            user_player = player("", playerCards[0], playerCards[1])
+            session['dealer_card'] = dealerCard
+            session['dealer_hand'] = dealer.getHand()
+            session['player_hand'] = playerCards
+            session['player_name'] = ""
+            session.modified = True
+
+    if 'nametag' in request.form:
+        user_input = request.form.get('user-inpt')  # use .get to avoid KeyError
+        #handles empty name.
+        if user_input:  # Check if the user input is not empty
+            user_player.setName(user_input)
+            session['player_name'] = user_input
+            session.modified = True
+        else:
+            return "No name was provided", 400  # Handle the case when no name is provided
         renderVars["cards"] = dealer.getHand()
-        renderVars["hideName"] = "hidden" #Hides the name field by assigning hidden class
-        renderVars["hands"] = player.getHand(player)
-    elif ('hit' in request.form and renderVars["hideName"] == "hidden"):
+        renderVars["hide_name"] = "hidden"
+        renderVars["hands"] = user_player.getHand()
+    elif 'hit' in request.form and renderVars["hide_name"] == "hidden":
         player.appendHand(gameHandler.deal())
-        if (player.sumTotal() == 21):
-            renderVars["result_text"] = gameHandler.runDealer(dealer, player)
-            renderVars["result_hidden"] = "" #Unhides the results
-    elif ('stay' in request.form and renderVars["hideName"] == "hidden"):
-        #Going to have the logic go all at once
-        #Not going to handle rendering the page for each deal
+        session['player_hand'] = user_player.getHand()
+        session.modified = True
+        if user_player.sumTotal() == 21:
+            renderVars["result_text"] = gameHandler.runDealer(dealer, user_player)
+            renderVars["results_hidden"] = ""
+    elif 'stay' in request.form and renderVars["hide_name"] == "hidden":
         dealer.appendHand(dealerLaterCard)
-        renderVars["result_text"] = gameHandler.runDealer(dealer, player)
-        renderVars["result_hidden"] = "" #Unhides the results
-    elif ('split' in request.form and renderVars["hideName"] == "hidden" and len(player.getHand()) == 2
-    and player.getHand()[0] == player.getHand()[1]):
-        #Not going to implement this
+        session['dealer_hand'] = dealer.getHand()
+        session.modified = True
+        renderVars["result_text"] = gameHandler.runDealer(dealer, user_player)
+        renderVars["results_hidden"] = ""
+    elif 'split' in request.form and renderVars["hide_name"] == "hidden" and len(player.getHand()) == 2 and player.getHand()[0] == player.getHand()[1]:
         pass
-    #Grab name
-    #Re_render with restart button
+
     return render_template("/play.html", hide_name=renderVars["hide_name"], tagline=renderVars["tagline"],
-    cards=gameHandler.royals(renderVars["cards"]), hands=gameHandler.royals(renderVars["hands"]), results_hidden=renderVars["results_hidden"],
-    result_text=renderVars["result_text"])
+                           pname=user_player.getName(), cards=gameHandler.royals(renderVars["cards"]), hands=gameHandler.royals(renderVars["hands"]),
+                           results_hidden=renderVars["results_hidden"], result_text=renderVars["result_text"])
 
 #404 error errorhandler
 #[CYNICAL] hehehe

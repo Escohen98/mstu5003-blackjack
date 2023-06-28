@@ -40,12 +40,18 @@ main {
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
+  flex-direction: row;
 }
 
 .card-hand {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.player-hand {
+  display: flex;
+  flex-direction: column;
 }
 
 .card {
@@ -75,6 +81,11 @@ main {
 
 #results button {
   margin: 0 5px;
+}
+
+#play-buttons {
+  margin-top: 100px
+  margin-bottom: 100px
 }
 
 .hidden {
