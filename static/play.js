@@ -57,6 +57,7 @@ let player = {
   function handleHit() {
     addCard(player);
     let total = player.total;
+
     if(total > 21) {
       getResults(-1);
     } else if(total == 21 && player.cards.length == 2) {
@@ -102,7 +103,7 @@ let player = {
     let resultText = document.getElementById("result-msg");
     let resultGif = document.getElementById("result-gif");
     if (result == -1) {
-      resultText.innerHTML = "You lose. 😆🤣😂😁╰(*°▽°*)╯😉🤩🥰😘😎😳🥳🫢😛";
+      resultText.innerHTML = "You lose. ╰(*°▽°*)╯ 😆🤣😂😁😉🤩🥰😘😎😳🥳🫢😛";
       resultGif.src = "https://i.giphy.com/media/OHrZoTiRXq2A/giphy.webp";
     } else if (result == 1) {
       resultText.innerHTML = "Oh noz, you won. Why??? 😱😭😵🤬🤢👿";
@@ -144,6 +145,13 @@ let player = {
       playerElems[1].children[1].appendChild(card);
     }
     plyr.total = sumTotal(plyr.cards);
+    let dealerElems = document.getElementsByClassName("player-hand");
+    if(plyr === dealer) {
+      document.getElementById(`dealer-total`).innerHTML = `Total: ${dealer.total}`;
+    } else {
+      document.getElementById(`player-total`).innerHTML = `Total: ${player.total}`;
+    }
+
   }
 
   /*
@@ -219,7 +227,6 @@ let player = {
     let aces = 0;
     cards.forEach((arg) => {
         //Handles 11 (ace) going above 21
-        console.log(`arg: ${royals(arg)}`);
         //There's some redundency in here, but it apparently fixes a counting bug.
         if (arg == 14) {
           aces++;
@@ -238,7 +245,6 @@ let player = {
       }
       sum-=10;
     }
-    console.log(sum);
     return sum;
   }
 

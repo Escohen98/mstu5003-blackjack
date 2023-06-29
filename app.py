@@ -5,8 +5,6 @@
 #Anyway, have fun!
 
 from flask import Flask, request, url_for, redirect, render_template
-from play import play
-from player import player
 app = Flask(__name__)
 
 #Home page
