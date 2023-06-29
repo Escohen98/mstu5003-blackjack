@@ -19,42 +19,36 @@ Very organized
     <form method="POST" class="name-form {{hide_name}}">
       <!-- Submit your name -->
       <label name="username">{{tagline}}: <input type="text" name="user-inpt" /></label>
-      <button type="submit" name="nametag" class="btn btn-primary">Go!</button>
+      <button type="submit" name="nametag" id="nametag" class="btn btn-primary">Go!</button>
     </form>
   </header>
   <main>
-    <section id="game_board">
+    <section id="game-board" class="hidden">
     <!-- Going to be re-rendering everytime with more cards
       -- Could honestly auto-gen the card-hands, but eh.
       -- Probably going to need to further educate myself on this one. -->
-      <div id="dealer" class="player-hand">
-        <h3>Dealer</h3><br>
-        <div class="card-hand">
-          {% for card in cards %}
-            <p class="card">{{card}}</p>
-          {% endfor %}
-        </div>
-      </div
-      <div id="player" class="player-hand">
-        <h3>{{pname}}</h3><br>
-        <div class="card-hand">
-          {% for hand in hands %}
-          <!-- Get request only -->
-            <p class="card">{{hand}}</p>
-          {% endfor %}
-        </div>
-      </div>
+
+      {% for player in players %}
+        <div class="player-hand">
+          <!-- Dealer then player name -->
+          <h3>{{name}}</h3><br>
+          <div class="card-hand">
+          </div>
+        </div
+      {% endfor %}
     </section>
     <section id="play-buttons">
   <!-- Going to be hidden when not in play -->
       <form id="play-buttons" method="POST">
-        <button type="submit" name="hit" value="Hit💪" class="btn btn-success">Hit💪</button>
-        <button type="submit" name="stay" value="Stay⚠️" class="btn btn-danger">Stay⚠️</button>
+        <button type="submit" name="hit" id="hit" value="Hit💪" class="btn btn-success">Hit💪</button>
+        <button type="submit" name="stay" id="stay" value="Stay⚠️" class="btn btn-danger">Stay⚠️</button>
         <!-- Probably not going to implement this with the time I have -->
-        <button type="submit" name="split" value="Split🪓" class="btn btn-warning hidden">Split🪓</button>
+        <button type="submit" name="split" id="split" value="Split🪓" class="btn btn-warning hidden">Split🪓</button>
       </form>
     </section>
-    <section id="results" class={{results_hidden}}>
+    <section id="results" class="hidden">
+      <p id="result-msg"></p>
+      <img id="result-gif" src="#" />
       <p id="result-text">{{result_text}}</p>
       <a href="/"><button type="button" class="btn btn-info">Back</button></a>
       <a href="/play.html"><button type="button" class="btn btn-secondary">Play Again!</button></a>

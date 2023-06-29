@@ -101,12 +101,28 @@ def game():
                            pname=user_player.getName(), cards=gameHandler.royals(renderVars["cards"]), hands=gameHandler.royals(renderVars["hands"]),
                            results_hidden=renderVars["results_hidden"], result_text=renderVars["result_text"])
 
+#Play (main) page
+@app.route('/play.html', methods=['GET', 'POST'])
+def game():
+
 #404 error errorhandler
 #[CYNICAL] hehehe
 @app.errorhandler(404)
 def page_not_found(e):
     deck = []
     return render_template('404.html'), 404
+
+#Takes in a tertiary value and returns an array.
+# 1 for win message.
+# -1 for lose message.
+# 0 for draw.
+def getResults(result):
+    if (result == 1):
+        return ["Oh noz, you won. Why??? 😱😭😵🤬🤢👿", "[GIF URL]"
+    if (result == -1):
+        return ["You lose. 😆🤣😂😁╰(*°▽°*)╯😉🤩🥰😘😎😳🥳🫢😛", "[GIF URL]"]
+
+    return ["It's a draw 🫤", "[GIF URL]"]
 
 #Runs the server
 if __name__ == "__main__":

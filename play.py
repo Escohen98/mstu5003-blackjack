@@ -13,7 +13,7 @@ class play():
     #Returns array
     def generateDeck(self):
         self.deck = []
-        for i in range(2, 17):
+        for i in range(2, 15):
             for j in range(4):
                 self.deck.append(i)
         return self.deck
@@ -30,11 +30,13 @@ class play():
 
     #Handles dealer play. Going to be re-used
     def runDealer(self,dealer, player):
-        while dealer.sumTotal() < 16:
+        dealerTotal = dealer.sumTotal()
+        playerTotal = player.sumTotal()
+        while dealerTotal < 16:
             dealer.appendHand(self.deal())
-        if dealer.sumTotal() > 21 or dealer.sumTotal() > player.sumTotal():
+        if dealerTotal <= 21 and dealerTotal > playerTotal:
             return "You lose. 😆🤣😂😁╰(*°▽°*)╯😉🤩🥰😘😎😳🥳🫢😛"
-        elif dealer.sumTotal() < player.sumTotal():
+        elif dealerTotal > 21 or dealerTotal < playerTotal:
             return "Oh noz, you won. Why??? 😱😭😵🤬🤢👿"
         else:
             return "It's a draw 🫤"
