@@ -16,24 +16,21 @@ let player = {
 (function() {
   window.addEventListener("load", initialize);
   let deck = [];
-  let dealLaterCard = -1; //For later
+  let dealLaterCard; //For later
 
   //Starts loading page with just a name field.
   function initialize() {
-    let person = prompt("Enter your name, soldier")
-    while(true) {
-      if (person == null || person.length < 4) {
-        alert()
-      }
-    }
-
-    let hit = document.getElementById("hit");
-    let stay = document.getElementById("stay");
+    //Was going to use these for something else, but I decided not to
+    //No point in changing now.
+    let hitButton = document.getElementById("hit");
+    let stayButton = document.getElementById("stay");
     //Not implementing
     let split = document.getElementById("split");
-    document.querySelector("Go!").addEventListener("click", startGame);
-    hit.addEventListener("click", hit());
-    stay.addEventListener("click", stay());
+    nameCheck();
+    startGame();
+    //document.querySelector("nametag").addEventListener("click", startGame);
+    hitButton.addEventListener("click", handleHit);
+    stayButton.addEventListener("click", handleStay);
 
   }
 
@@ -42,25 +39,24 @@ let player = {
 
   //Runs the game.
   function startGame() {
-     if (nameCheck()) { //Makes sure the username has been set.
-       break;
-     }
-    document.getElementById("game-board").classlist.remove("hidden");
+
+    document.getElementById("game-board").removeAttribute("hidden");
+    document.getElementById("play-buttons").removeAttribute("hidden");
     deck = generateDeck();
 
     //Order of dealing.
-    hit(); //Adds to player
-    dealer.cards.push(deal());
-    hit();
+    handleHit(player); //Adds to player
+    addCard(dealer); //Adds to dealer
+    handleHit(player); //Adds to player again 😳
 
-
-    dealerLaterCard = deal(); //For later.
+    dealLaterCard = deal(); //For later.
   }
 
   //Adds a card to the player's hand.
   //Checks for bust / blackjack & sends to results
-  function hit() {
-    let total = addCard(player);
+  function handleHit() {
+    addCard(player);
+    let total = player.total;
     if(total > 21) {
       getResults(-1);
     } else if(total == 21 && player.cards.length == 2) {
@@ -69,10 +65,20 @@ let player = {
   }
 
   //Handles the stay button event.
-  function stay() {
+  function handleStay() {
     //It's later.
     dealer.cards.push(dealLaterCard);
-    getResults(runDealer);
+    //Gets dealer hands -> needs to be done for special case.
+     let dealerElems = document.getElementsByClassName("player-hand");
+
+     const card = document.createElement("p")
+     card.innerHTML = royals(dealLaterCard);
+     card.classList.add("card");
+
+     dealerElems[0].children[1].appendChild(card);
+
+     dealer.total = sumTotal(dealer.cards);
+    getResults(runDealer(dealer, player));
   }
 
   //Handles dealer logic
@@ -80,6 +86,7 @@ let player = {
   function runDealer(dealer, player) {
     dealer.total = sumTotal(dealer.cards);
     while (dealer.total < 16) {
+      addCard(dealer);
       dealer.total = sumTotal(dealer.cards);
     }
     return compareTo(player.total, dealer.total);
@@ -109,8 +116,8 @@ let player = {
     }
 
     //Showing results while hiding action buttons.
-    document.getElementById("results").classList.remove("hidden");
-    document.getElementById("play-buttons").classList.add("hidden");
+    document.getElementById("results").removeAttribute("hidden");
+    document.getElementById("play-buttons").hidden = true;
   }
 
   /** Game Helper Functions **/
@@ -121,37 +128,44 @@ let player = {
    * Returns total.
    */
   function addCard(plyr) {
-    dealt = deal();
+    let dealt = deal();
+
+    //Gets player hands
+    let playerElems = document.getElementsByClassName("player-hand");
     plyr.cards.push(dealt);
-    let playerElem = document.getElementById("game-board").children[1];
-    if (plyr.name == dealer.name) {
-      playerElem = document.getElementById("game-board").children[0];
-    }
 
     const card = document.createElement("p")
-    p.innerHTML = royals(dealt);
-    p.classList.add("card");
+    card.innerHTML = royals(dealt);
+    card.classList.add("card");
 
-    playerElem.children[1].appendChild(card);
-    return sumTotal(plyr.cards);
+    if(plyr === dealer) {
+      playerElems[0].children[1].appendChild(card);
+    } else {
+      playerElems[1].children[1].appendChild(card);
+    }
+    plyr.total = sumTotal(plyr.cards);
   }
-  
+
   /*
    * First checks for player name (handled by python)
    * If name > 4 chars, unhides game boards and sets up initial cards
    * Also sets player name in object then returns whether or not user needs to enter name.
    */
   function nameCheck() {
-    let name = document.getElementById("player").children[0];
-    if(name == "") { //Not blank
-      alert("Enter a name, soldier.");
-      return false; //Using continue because I don't want an else statement. Less indents.
-    } else if (name.length < 4) { //Less than 4 chars
-      alert("Enter a real name, solider. That means more than 4 characters.");
-      return false;
-    }
-    player.name = name;
-    return true;
+    let name;
+    do {
+      name = prompt("What is your name, soldier?");
+      //the h2 element for the player.
+      let playerName = document.getElementById("game-board").children[1].children[0];
+      if(name == "") { //Not blank
+        alert("Enter a name, soldier.");
+      } else if (name.length < 4) { //Less than 4 chars
+        alert("Enter a real name, solider. That means more than 4 characters.");
+      } else {
+        player.name = name;
+        playerName.innerHTML = name;
+      }
+    } while (name == "" || name.length < 4);
   }
   /*
    * Generates Deck. It's 1d.
@@ -181,8 +195,7 @@ let player = {
    * Converts numbers to royals
    * Returns number if not a royal
    */
-  function royals(cards) {
-    cards.forEach((card) => {
+  function royals(card) {
       if (card == 11) {
         return 'J';
       } else if (card == 12) {
@@ -194,9 +207,6 @@ let player = {
       }
 
       return card;
-    });
-
-    return newCards;
   }
 
   /*
@@ -205,20 +215,30 @@ let player = {
    * Player object function
    */
   function sumTotal(cards) {
-    sum = 0;
+    let sum = 0;
+    let aces = 0;
     cards.forEach((arg) => {
         //Handles 11 (ace) going above 21
-        if (arg == 14 and sum+11 > 21) {
-          sum += 1;
-        } else if (arg == 14) { //Handles Ace
+        console.log(`arg: ${royals(arg)}`);
+        //There's some redundency in here, but it apparently fixes a counting bug.
+        if (arg == 14) {
+          aces++;
           sum += 11;
-        } else if (arg >= 10) { //Handles other royals
+        } else if (arg >= 10 && arg <= 13) { //Handles other royals
           sum += 10;
-        } else {
+        } else if (arg < 10) {
           sum += arg;
         }
     });
 
+    //Necessary if the aces are the last card
+    for(i=0; i<aces; i++) {
+      if(sum <= 21) {
+        break;
+      }
+      sum-=10;
+    }
+    console.log(sum);
     return sum;
   }
 
@@ -255,4 +275,4 @@ function shuffle(a) {
     }
     return a;
 }
-});
+}) ();

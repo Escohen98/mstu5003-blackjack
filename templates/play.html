@@ -7,53 +7,50 @@ Very organized
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blackjack</title>
+  <link rel="icon" href="../static/images/gambling.ico">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="../static/play.css">
-  <!--<script src="../static/play.js"></script>-->
+  <script src="../static/play.js"></script>
 </head>
 <body>
   <header>
-    <a href="/"><button type="button">Back.</button></a>
+    <a href="/"><button type="button">Back</button></a>
     <h1>Let's make some money!! </h1>
     <!-- Going to be hidden when in play -->
-    <form method="POST" class="name-form {{hide_name}}">
-      <!-- Submit your name -->
-      <label name="username">{{tagline}}: <input type="text" name="user-inpt" /></label>
-      <button type="submit" name="nametag" id="nametag" class="btn btn-primary">Go!</button>
-    </form>
   </header>
   <main>
-    <section id="game-board" class="hidden">
-    <!-- Going to be re-rendering everytime with more cards
-      -- Could honestly auto-gen the card-hands, but eh.
-      -- Probably going to need to further educate myself on this one. -->
+    <section id="game-board" hidden>
+      <div class="player-hand">
+        <h2>{{dealer}}</h2>
+        <div class="card-hand">
+        </div>
+      </div>
+      <div class="player-hand">
+        <h2>{{player_default}}</h2>
+        <div class="card-hand">
+        </div>
+      </div>
+  </section>
 
-      {% for player in players %}
-        <div class="player-hand">
-          <!-- Dealer then player name -->
-          <h3>{{name}}</h3><br>
-          <div class="card-hand">
-          </div>
-        </div
-      {% endfor %}
-    </section>
-    <section id="play-buttons">
+    <section id="play-buttons" hidden>
   <!-- Going to be hidden when not in play -->
-      <form id="play-buttons" method="POST">
-        <button type="submit" name="hit" id="hit" value="Hit💪" class="btn btn-success">Hit💪</button>
-        <button type="submit" name="stay" id="stay" value="Stay⚠️" class="btn btn-danger">Stay⚠️</button>
+      <form id="play-buttons-form">
+        <button type="button" name="hit" id="hit" value="Hit💪" class="btn btn-success">Hit💪</button>
+        <button type="button" name="stay" id="stay" value="Stay⚠️" class="btn btn-danger">Stay⚠️</button>
+
         <!-- Probably not going to implement this with the time I have -->
-        <button type="submit" name="split" id="split" value="Split🪓" class="btn btn-warning hidden">Split🪓</button>
+        <button type="button" name="split" id="split" value="Split🪓" class="btn btn-warning" hidden>Split🪓</button>
       </form>
     </section>
-    <section id="results" class="hidden">
+    <section id="results" hidden>
       <p id="result-msg"></p>
       <img id="result-gif" src="#" />
-      <p id="result-text">{{result_text}}</p>
-      <a href="/"><button type="button" class="btn btn-info">Back</button></a>
-      <a href="/play.html"><button type="button" class="btn btn-secondary">Play Again!</button></a>
-      <!-- Probably not going to implement this with the time I have -->
-      <a href="/surprise.html"><button type="button" class="btn btn-warning" class="hidden">Ooo lala</button></a>
+      <div id="action-buttons">
+        <a href="/"><button type="button" class="btn btn-info">Back</button></a>
+        <a href="/play.html"><button type="button" class="btn btn-secondary">Play Again!</button></a>
+        <!-- Probably not going to implement this with the time I have -->
+        <a href="/surprise.html"><button type="button" class="btn btn-warning">Ooo lala</button></a>
+      </div>
     </section>
   </main>
 </body>

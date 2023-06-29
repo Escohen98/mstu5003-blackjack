@@ -17,8 +17,12 @@ header {
   justify-content: space-between;
 }
 
-header h1 {
+header {
   margin: 0;
+}
+
+h1 {
+  margin-right: 30%;
 }
 
 .name-form {
@@ -75,12 +79,22 @@ main {
 
 #results {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   margin-top: 20px;
 }
 
-#results button {
-  margin: 0 5px;
+#action-buttons {
+  margin: 20px 5px;
+}
+
+#action-buttons > a {
+  margin: 0 50px;
+}
+
+#action-buttons > a > button {
+  padding: 15px 25px;
 }
 
 #play-buttons {
