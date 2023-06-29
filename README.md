@@ -1,4 +1,4 @@
-# Blackjack game built entirely using Python Flask.
+# Blackjack game built with the assistance of Python Flask.
 
 Holy cow, what a time. I spent way too much time with this.
 
