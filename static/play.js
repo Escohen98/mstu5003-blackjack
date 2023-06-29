@@ -79,6 +79,7 @@ let player = {
      dealerElems[0].children[1].appendChild(card);
 
      dealer.total = sumTotal(dealer.cards);
+     document.getElementById(`dealer-total`).innerHTML = `Total: ${dealer.total}`;
     getResults(runDealer(dealer, player));
   }
 
@@ -134,21 +135,18 @@ let player = {
     //Gets player hands
     let playerElems = document.getElementsByClassName("player-hand");
     plyr.cards.push(dealt);
+    plyr.total = sumTotal(plyr.cards);
 
     const card = document.createElement("p")
     card.innerHTML = royals(dealt);
     card.classList.add("card");
 
-    if(plyr === dealer) {
-      playerElems[0].children[1].appendChild(card);
-    } else {
-      playerElems[1].children[1].appendChild(card);
-    }
-    plyr.total = sumTotal(plyr.cards);
     let dealerElems = document.getElementsByClassName("player-hand");
     if(plyr === dealer) {
+      playerElems[0].children[1].appendChild(card);
       document.getElementById(`dealer-total`).innerHTML = `Total: ${dealer.total}`;
     } else {
+      playerElems[1].children[1].appendChild(card);
       document.getElementById(`player-total`).innerHTML = `Total: ${player.total}`;
     }
 
